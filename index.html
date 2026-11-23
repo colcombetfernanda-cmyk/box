@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d0d0d">
+<title>B Focus X</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,700;1,900&display=swap" rel="stylesheet">
+<style>
+/* ====== IMÁGENES ======
+   Copiá tus imágenes originales (sin modificar) en la carpeta assets/ junto a este index.html:
+   assets/hero.jpg    -> foto de la atleta (pantalla de inicio)
+   assets/gym.jpg     -> foto de fondo del gimnasio (splash / login)
+   assets/wod.jpg     -> foto de la barra (pantalla WOD)
+   assets/perfil.jpg  -> foto de perfil
+   Si no existen, se ve un fondo oscuro de reemplazo.
+*/
+:root{
+  --bg:#0d0d0d; --card:#1a1a1a; --card2:#222; --line:#2c2c2c;
+  --or:#f47b0b; --or2:#ff8a1f; --tx:#fff; --mut:#a8a8a8; --ok:#3ddc84; --bad:#ff4d4d;
+  --img-hero:url('assets/hero.jpg'); --img-gym:url('assets/gym.jpg'); --img-wod:url('assets/wod.jpg'); --img-perfil:url('assets/perfil.jpg');
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:#050505;color:var(--tx);font-family:'Roboto',system-ui,sans-serif}
+body{display:flex;align-items:center;justify-content:center}
+button,input,select,textarea{font-family:inherit;color:inherit}
+.phone{width:100%;max-width:430px;height:100dvh;background:var(--bg);position:relative;overflow:hidden;display:flex;flex-direction:column}
+@media(min-width:600px){.phone{height:min(880px,96dvh);border-radius:44px;border:2px solid #333;box-shadow:0 0 0 6px #111,0 30px 80px #000}}
+#screen{flex:1;overflow-y:auto;overflow-x:hidden;animation:fade .25s ease}
+#screen::-webkit-scrollbar{width:0}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.pad{padding:16px}
+h1,h2,h3{font-weight:700}
+.top{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;position:sticky;top:0;background:var(--bg);z-index:5}
+.top h2{font-size:18px;flex:1;text-align:center}
+.ib{background:none;border:0;font-size:24px;width:40px;height:40px;cursor:pointer;color:var(--tx);position:relative}
+.ib .dot{position:absolute;top:4px;right:2px;background:var(--or);color:#000;border-radius:10px;font-size:11px;font-weight:700;padding:1px 6px}
+/* logo */
+.logo{display:inline-block;font-family:'Exo 2',sans-serif;font-style:italic;font-weight:900;line-height:1;position:relative;padding:.62em 0}
+.logo .row{display:flex;align-items:center;letter-spacing:.01em}
+.logo .f{color:var(--or);text-shadow:0 .04em 0 #a84f00,0 .08em .12em #0008}
+.logo .ol{position:relative;display:inline-block;width:.86em;height:.86em;margin:0 .02em}
+.logo .ol svg{width:100%;height:100%;overflow:visible}
+.logo .b,.logo .x{position:absolute;left:50%;transform:translateX(-50%);color:#fff;font-size:.78em;text-shadow:0 .05em 0 #888,0 .1em .12em #0008}
+.logo .b{top:-.85em}.logo .x{bottom:-.85em}
+.ico{width:1.15em;height:1.15em;vertical-align:-.2em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}.list .it .ico{color:var(--or)}.lg{display:block;margin:0 auto;height:auto}
+.btn{width:100%;border:0;border-radius:10px;padding:15px;font-weight:700;font-size:16px;letter-spacing:.03em;text-transform:uppercase;cursor:pointer;transition:.15s}
+.btn.p{background:var(--or);color:#111}.btn.p:active{transform:scale(.98);background:var(--or2)}
+.btn.o{background:transparent;border:2px solid var(--or);color:#fff}
+.btn.s{padding:9px 14px;font-size:13px;width:auto;border-radius:8px}
+.btn.d{background:#2a1212;color:var(--bad);border:1px solid #4a1b1b}
+.btn:disabled{opacity:.4}
+.field{display:flex;align-items:center;gap:10px;background:#161616;border:1px solid #333;border-radius:10px;padding:0 14px;margin-bottom:12px}
+.field input,.field select,.field textarea{flex:1;background:none;border:0;outline:0;padding:15px 0;font-size:15px}
+.field select option{background:#222}
+.field.ta{align-items:flex-start}.field textarea{min-height:74px;resize:vertical}
+.field:focus-within{border-color:var(--or)}
+label.l{display:block;font-size:12px;color:var(--mut);margin:6px 2px;text-transform:uppercase;letter-spacing:.05em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.row{display:flex;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 10px;text-align:center;cursor:pointer;font-weight:500;font-size:14px;color:#fff}
+.tile .ic{display:block;font-size:30px;color:var(--or);margin-bottom:6px}
+.tile.big{padding:22px 10px;font-size:17px}.tile.big .ic{font-size:44px}
+.tile:active{background:var(--card2)}
+.num{font-size:34px;font-weight:700}
+.mut{color:var(--mut)}.or{color:var(--or)}
+.nav{display:flex;border-top:1px solid #222;background:#0b0b0b;padding:6px 0 calc(8px + env(safe-area-inset-bottom))}
+.nav button{flex:1;background:none;border:0;color:#bbb;font-size:11px;padding:6px 0;cursor:pointer}
+.nav button .i{display:block;font-size:24px;margin-bottom:2px}
+.nav button.on{color:var(--or)}
+/* hero */
+.hero{height:320px;background:linear-gradient(to top,#0d0d0d 4%,#0d0d0d00 65%),linear-gradient(#0d0d0dd0,#0d0d0d00 32%),var(--img-hero) center top/cover,radial-gradient(circle at 70% 30%,#3a2a20,#0d0d0d);position:relative}
+.hero .hi{position:absolute;left:16px;bottom:62px}
+.hero .hi h1{font-size:26px;font-weight:900}
+.next{margin:-52px 14px 12px;position:relative;background:#171717ee;border:1px solid #333;border-radius:14px;padding:12px}
+/* day tabs */
+.days{display:flex;gap:2px;background:var(--card);border-radius:12px;padding:5px;margin:0 14px 12px}
+.days button{flex:1;background:none;border:0;border-radius:8px;padding:7px 0;color:#ddd;font-size:13px;cursor:pointer}
+.days button b{display:block;font-size:14px}.days button.on{background:var(--or);color:#111}
+.slot{display:flex;align-items:center;background:var(--card);border:1px solid #262626;border-radius:10px;padding:13px 15px;margin:0 14px 8px;cursor:pointer}
+.slot .t{font-weight:700;font-size:17px}.slot .p{font-size:13px;color:#ccc}
+.slot .m{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:14px}
+.pill{border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;background:#333;color:#ddd}
+.pill.or{background:var(--or);color:#111}.pill.ok{background:#14331f;color:var(--ok)}.pill.bad{background:#3a1515;color:var(--bad)}
+.slot.off{opacity:.4}
+/* wod */
+.bl{margin-bottom:16px}.bl h3{color:var(--or);font-size:18px;display:flex;gap:8px;align-items:center}.bl h3:before{content:'»';font-size:26px;line-height:1}
+.bl pre{font-family:inherit;white-space:pre-wrap;margin:4px 0 0 28px;color:#e8e8e8;font-size:14.5px;line-height:1.5}
+.surprise{border:2px solid var(--or);border-radius:10px;color:var(--or);font-weight:700;text-align:center;padding:12px;margin:14px 0;background:#f47b0b12;text-transform:uppercase;font-size:14px}
+.secret{border:2px dashed var(--or);border-radius:12px;padding:12px;margin:12px 0;background:#f47b0b10}
+.wodhero{height:130px;margin:-0px;background:linear-gradient(to top,#0d0d0d,#0d0d0d55),var(--img-wod) center/cover,#151515}
+.bars{display:flex;align-items:flex-end;gap:14px;height:90px;padding:0 8px}
+.bars div{flex:1;background:linear-gradient(var(--or2),var(--or));border-radius:3px 3px 0 0;min-height:3px;position:relative}
+.bars span{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:12px;color:#ccc}
+.list a,.list .it{display:flex;align-items:center;gap:12px;padding:14px;background:var(--card);border:1px solid var(--line);border-radius:10px;margin-bottom:8px;cursor:pointer;font-size:15px}
+.list .it .go{margin-left:auto;color:#aaa}
+.av{width:116px;height:116px;border-radius:50%;border:3px solid var(--or);margin:0 auto 10px;background:var(--img-perfil) center/cover,#2a2a2a;display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:700;position:relative;overflow:hidden}
+.bgimg{background:linear-gradient(#0d0d0dcc,#0d0d0df0),var(--img-gym) center/cover,#0d0d0d}
+.modal{position:absolute;inset:0;background:#000b;z-index:50;display:flex;align-items:flex-end;animation:fade .2s}
+.modal>div{background:#181818;width:100%;border-radius:20px 20px 0 0;padding:20px;max-height:88%;overflow:auto;border-top:2px solid var(--or)}
+.toast{position:absolute;left:16px;right:16px;bottom:84px;background:#fff;color:#111;font-weight:700;padding:12px 14px;border-radius:10px;z-index:99;animation:fade .2s}
+.toast.err{background:var(--bad);color:#fff}
+.sw{appearance:none;width:44px;height:26px;border-radius:13px;background:#444;position:relative;cursor:pointer;flex:none}
+.sw:checked{background:var(--or)}.sw:after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s}.sw:checked:after{left:21px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:0 14px 10px}.chips::-webkit-scrollbar{height:0}
+.chip{flex:none;border:1px solid #444;border-radius:20px;padding:7px 13px;font-size:13px;background:none;cursor:pointer;color:#ddd}.chip.on{background:var(--or);color:#111;border-color:var(--or);font-weight:700}
+.sec{padding:0 14px}.sec h3{margin:12px 0 8px;font-size:16px}
+.err{color:var(--bad);font-size:13px;margin-bottom:8px}
+.splash{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;background:linear-gradient(#0d0d0d99,#0d0d0dee),var(--img-gym) center/cover,#0d0d0d}
+.load{width:60%;height:4px;background:#333;border-radius:3px;overflow:hidden}.load i{display:block;height:100%;width:0;background:var(--or);animation:ld 1.6s forwards}
+@keyframes ld{to{width:100%}}
+</style>
+</head>
+<body>
+<div class="phone"><div id="screen"></div><div id="navwrap"></div></div>
+
+<script>
+/* ================= UTILIDADES ================= */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const S={get(k,d){try{const v=localStorage.getItem('bfx_'+k);return v==null?d:JSON.parse(v)}catch{return d}},set(k,v){localStorage.setItem('bfx_'+k,JSON.stringify(v))}};
+const DS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],DF=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const pd=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const dm=s=>{const d=pd(s);return d.getDate()+'/'+(d.getMonth()+1)};
+const HH=h=>String(h).padStart(2,'0')+':00';
+const K=(d,h)=>d+'|'+h;
+const CAP=10,HOURS=[8,9,10,11,12,13,14,15,16,17,18,19,20];
+const BLOCKS={warm:'Entrada en Calor',mob:'Mobility',str:'Fuerza',skill:'Skill / Técnica',cond:'Conditioning',wod:'WOD',cool:'Vuelta a la Calma'};
+const WODTYPES=['AMRAP','EMOM','For Time','Tabata','Chipper','Rounds for Time','Intervals','Strength','Benchmark WOD','Hero WOD','Open WOD','Personalizado'];
+function weekDates(off=0){const t=new Date();t.setHours(0,0,0,0);const w=t.getDay();if(w===6)t.setDate(t.getDate()+2);else if(w===0)t.setDate(t.getDate()+1);else t.setDate(t.getDate()-(w-1));t.setDate(t.getDate()+7*off);return [0,1,2,3,4].map(i=>{const d=new Date(t);d.setDate(t.getDate()+i);return iso(d)})}
+const startOf=(d,h)=>{const x=pd(d);x.setHours(h,0,0,0);return x};
+const canAct=(d,h)=>Date.now()<=startOf(d,h).getTime()-15*60000;
+
+/* ================= DATOS ================= */
+const LIB={
+'Gimnásticos':['Pull-ups','Chest to bar','Bar muscle ups','Ring muscle ups','Toes to bar','Knee raises','Handstand push-ups','Handstand walk','Handstand hold','Push-ups','Dips','Rope climbs','Rope climb legless','Pistol squats','Burpees','Box jumps'],
+'Weightlifting':['Clean','Power clean','Squat clean','Hang clean','Snatch','Power snatch','Hang snatch','Split jerk','Push jerk','Push press','Strict press','Deadlift','Sumo deadlift high pull','Thrusters','Front squat','Back squat','Overhead squat','Romanian deadlift'],
+'Kettlebells y mancuernas':['Kettlebell swing','Russian swing','American swing','Goblet squat','Dumbbell snatch','Dumbbell clean','Dumbbell thruster','Dumbbell shoulder to overhead','Dumbbell lunges','Farmer carry','Suitcase carry'],
+'Cardio y máquinas':['Running','Sprint','Rowing','Ski erg','Assault bike','Echo bike','Bike erg','Double unders','Single unders'],
+'Core y accesorios':['Sit-ups','Abmat sit-ups','V-ups','Hollow hold','Plank','Side plank','GHD sit-ups','Back extensions','Hip extensions','Lunges','Walking lunges','Step-ups'],
+'Strongman y funcional':['Sandbag carry','Sandbag cleans','Sandbag over shoulder','Sled push','Sled pull','Yoke carry','Wall balls','Box carry','Tire flips']};
+function seed(){
+  if(S.get('ver')===3)return;Object.keys(localStorage).filter(k=>k.startsWith('bfx_')).forEach(k=>localStorage.removeItem(k));
+  S.set('users',[{id:1,name:'Prof. Mati',email:'mati@bfocusx.com',pass:'coach123',phone:'',role:'admin',active:true,fixed:true},{id:2,name:'Prof. Leo',email:'leo@bfocusx.com',pass:'coach123',phone:'',role:'admin',active:true,fixed:true},{id:3,name:'Fernanda Colcombet',email:'fernanda@gmail.com',pass:'alumno123',phone:'',role:'alumno',active:true,photo:'assets/perfil.jpg'}]);
+  S.set('bookings',[]);S.set('wait',[]);S.set('notifs',[]);S.set('cfg',{});S.set('prs',[]);S.set('templates',[]);S.set('custom',[]);
+  const mon=weekDates(0)[0];
+  S.set('wods',{[K(mon,18)]:{title:'Strength + Conditioning',type:'AMRAP',blocks:{warm:'5 min de movilidad articular',str:'5 x 5 Thruster (peso moderado)',cond:'AMRAP 12 min:\n- 10 Burpees\n- 15 Wall Balls\n- 20 Sit-ups',cool:'Estiramientos generales'},rx:'Thruster 43/30 kg · Wall ball 9/6 kg',scaled:'Thruster 30/20 kg · Burpees sin salto',notes:'Mantené el ritmo constante.',hasSecret:true}});
+  S.set('secrets',{[K(mon,18)]:{name:'Bear complex finisher',detail:'Al sonar el cierre del AMRAP: 1 ronda de Bear Complex con barra vacía o 20 kg.',priv:'Demostrar 2 veces antes de ejecutar. Explicar el orden de movimientos.',safety:'Escalar con mancuernas. Parar ante dolor lumbar.'}});
+  S.set('ver',3);
+}
+const dummy=k=>{let n=0;for(const c of k)n=(n*31+c.charCodeAt(0))>>>0;return [0,0,1,2,3,4,6,8,9,10][n%10]};
+const users=()=>S.get('users',[]),uById=id=>users().find(u=>u.id===id);
+const bookings=()=>S.get('bookings',[]);
+const realCount=k=>bookings().filter(b=>b.k===k&&b.st==='confirmed').length;
+const offers=k=>S.get('wait',[]).filter(w=>w.k===k&&w.st==='offered'&&w.until>Date.now()).length;
+const taken=k=>dummy(k)+realCount(k);
+const free=k=>Math.max(0,CAP-taken(k)-offers(k));
+const cfgOf=(d,h)=>S.get('cfg',{})[K(d,h)]||{};
+const teacher=(d,h)=>cfgOf(d,h).teacher||(h%2===0?'Prof. Mati':'Prof. Leo');
+const isOn=(d,h)=>!cfgOf(d,h).off;
+const me=()=>uById(S.get('session'));
+const myBook=(uid,k)=>bookings().find(b=>b.u===uid&&b.k===k&&b.st==='confirmed');
+function notif(uid,text,extra={}){const n=S.get('notifs',[]);n.unshift({id:Date.now()+Math.random(),u:uid,text,ts:Date.now(),read:false,...extra});S.set('notifs',n)}
+function wodOf(k){return S.get('wods',{})[k]||{title:'Strength + Conditioning',type:'AMRAP',blocks:{warm:'5 min de movilidad articular',str:'5 x 5 Thruster (peso moderado)',cond:'AMRAP 12 min:\n- 10 Burpees\n- 15 Wall Balls\n- 20 Sit-ups',cool:'Estiramientos generales'},rx:'',scaled:'',notes:'',hasSecret:false,_default:true}}
+
+/* "Servidor" local: toda regla se valida acá, no en la UI */
+function book(uid,d,h){
+  const k=K(d,h);
+  if(!isOn(d,h))return 'Horario no disponible.';
+  if(!canAct(d,h))return 'Ya no se puede reservar: cierra 15 min antes del inicio.';
+  if(myBook(uid,k))return 'Ya tenés reserva en este horario.';
+  if(free(k)<=0)return 'Clase completa.';
+  const b=bookings();b.push({id:Date.now(),u:uid,k,d,h,st:'confirmed',att:false,ts:Date.now()});S.set('bookings',b);
+  notif(uid,`Reserva confirmada: ${DF[pd(d).getDay()]} ${dm(d)} · ${HH(h)}`);return null}
+function cancel(uid,d,h){
+  const k=K(d,h);const b=bookings();const x=b.find(y=>y.u===uid&&y.k===k&&y.st==='confirmed');
+  if(!x)return 'No hay reserva.';if(!canAct(d,h))return 'Ya no se puede cancelar (menos de 15 min).';
+  x.st='cancelled';S.set('bookings',b);notif(uid,`Cancelación confirmada: ${dm(d)} · ${HH(h)}`);offerNext(k);return null}
+function offerNext(k){
+  const w=S.get('wait',[]);if(CAP-taken(k)-offers(k)<=0)return;
+  const n=w.find(x=>x.k===k&&x.st==='waiting');if(!n)return;
+  n.st='offered';n.until=Date.now()+10*60000;S.set('wait',w);
+  notif(n.u,`¡Se liberó un lugar! ${dm(n.k.split('|')[0])} · ${HH(+n.k.split('|')[1])}. Confirmalo en 10 min.`,{offer:n.k})}
+function sweep(){const w=S.get('wait',[]);let ch=false;w.forEach(x=>{if(x.st==='offered'&&x.until<=Date.now()){x.st='expired';ch=true}});if(ch){S.set('wait',w);[...new Set(w.map(x=>x.k))].forEach(offerNext)}}
+
+/* ================= UI ================= */
+const IC={home:'<path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M8 14h2M12 14h2M16 14h2M8 18h2M12 18h2"/>',trophy:'<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20a7 7 0 0 1 14 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14a7 7 0 0 1 4 6"/>',dumb:'<path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/>',chart:'<path d="M5 21V11M12 21V4M19 21v-7"/>',bell:'<path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4zM10 21h4"/>',menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>',lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',gift:'<rect x="3" y="8" width="18" height="4"/><path d="M5 12v9h14v-9M12 8v13M12 8C10 4 6 5 7 8M12 8c2-4 6-3 5 0"/>',pencil:'<path d="M4 20l4-1 11-11-3-3L5 16zM14 6l3 3"/>',logout:'<path d="M10 4H5v16h5M15 8l4 4-4 4M9 12h10"/>',chevL:'<path d="M15 5l-7 7 7 7"/>',chevR:'<path d="M9 5l7 7-7 7"/>',eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',list:'<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 14l2 2 4-4"/>',search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/>',play:'<path d="M7 4l13 8-13 8z" fill="currentColor"/>',shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>',clock:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/>'};
+const EM={'🏠':'home','📅':'cal','🗓':'cal','🏆':'trophy','👤':'user','👥':'users','🏋':'dumb','📊':'chart','📈':'chart','🔔':'bell','☰':'menu','‹':'chevL','›':'chevR','⚙':'gear','🔒':'lock','🎁':'gift','✏':'pencil','📝':'pencil','↪':'logout','🛡':'shield','📋':'list','🔎':'search','⏰':'clock','👁':'eye','▶':'play','📁':''};
+const svg=n=>`<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${IC[n]}</svg>`;
+const emo=h=>h.replace(new RegExp('('+Object.keys(EM).join('|')+')\\uFE0F?','g'),(m,k)=>EM[k]?svg(EM[k]):'');
+const logo=(fs=40)=>`<img class="lg" src="assets/logo.png" alt="B Focus X" style="width:${Math.round(fs*5)}px;max-width:80%">`;
+let st={scr:'splash',day:0,week:0,tab:'',p:{}};
+const role=()=>me()?.role;
+let go=(scr,p={})=>{st.scr=scr;st.p=p;render()};
+function toast(m,err){const t=document.createElement('div');t.className='toast'+(err?' err':'');t.textContent=m;document.querySelector('.phone').appendChild(t);setTimeout(()=>t.remove(),2600)}
+function modal(h){closeModal();const m=document.createElement('div');m.className='modal';m.id='modal';m.innerHTML=emo('<div>'+h+'</div>');m.onclick=e=>{if(e.target===m)closeModal()};document.querySelector('.phone').appendChild(m)}
+const closeModal=()=>$('#modal')?.remove();
+const unread=()=>S.get('notifs',[]).filter(n=>n.u===S.get('session')&&!n.read).length;
+const hdr=(title,back)=>`<div class="top">${back?`<button class="ib" data-a="back">‹</button>`:`<button class="ib" data-a="go" data-s="profile">☰</button>`}<h2>${title}</h2><button class="ib" data-a="go" data-s="notifs">🔔${unread()?`<span class="dot">${unread()}</span>`:''}</button></div>`;
+function navbar(){
+  const r=role();if(!r||['splash','login','register','forgot'].includes(st.scr))return '';
+  const t=r==='alumno'?[['home','🏠','Inicio'],['classes','📅','Clases'],['history','🏆','Historial'],['profile','👤','Perfil']]
+          :[['home','🏠','Inicio'],['classes','📅','Clases'],['planner','🛡️','Coach'],['admin','⚙️','Admin'],['profile','👤','Perfil']];
+  const cur=st.scr;
+  return `<div class="nav">${t.map(([s,i,l])=>`<button class="${cur===s||(s==='classes'&&['roster','book'].includes(cur))||(s==='admin'&&['adminUsers','library','schedule','stats'].includes(cur))||(s==='planner'&&cur==='planner')?'on':''}" data-a="go" data-s="${s}"><span class="i">${i}</span>${l}</button>`).join('')}</div>`}
+function render(){
+  sweep();
+  if(!me()&&!['splash','login','register','forgot'].includes(st.scr))st.scr='login';
+  if(me()?.role==='alumno'&&['planner','roster','adminUsers','library','schedule','stats','admin'].includes(st.scr))st.scr='home';
+  $('#screen').innerHTML=emo((V[st.scr]||V.home)());
+  $('#navwrap').innerHTML=emo(navbar());$('#screen').scrollTop=0;
+}
+const V={};
+V.splash=()=>{setTimeout(()=>{if(st.scr==='splash')go(me()?'home':'login')},1800);return `<div class="splash">${logo(54)}<div style="font-weight:900;font-size:19px;font-style:italic;letter-spacing:.02em">ENTRENÁ. <span class="or">SUPERÁTE.</span></div><div class="load"><i></i></div></div>`};
+V.login=()=>`<div class="bgimg" style="min-height:100%;padding:60px 24px 24px;text-align:center">${logo(46)}<div style="margin:22px 0 34px;font-weight:700;letter-spacing:.04em">TU BOX DE CROSSFIT</div>
+<div class="field"><span>👤</span><input id="em" placeholder="Nombre o alias" autocomplete="username"></div>
+<div class="field"><span>🔒</span><input id="pw" type="password" placeholder="Contraseña (solo profes)" autocomplete="current-password"><span data-a="eye" style="cursor:pointer;color:#bbb">👁</span></div>
+<div class="err" id="er"></div><button class="btn p" data-a="login">Iniciar sesión</button>
+<p style="margin:18px 0;font-size:14px;cursor:pointer" data-a="go" data-s="forgot">¿Olvidaste tu contraseña?</p>
+<div class="row" style="gap:10px;color:#aaa;margin-bottom:18px"><hr style="flex:1;border-color:#333"> o <hr style="flex:1;border-color:#333"></div>
+<button class="btn o" data-a="go" data-s="register">Registrarse</button><p style="margin-top:22px;font-size:14px">Entrená con B Focus X</p>
+<p class="mut" style="font-size:11px;margin-top:20px;line-height:1.6">Alumnos: entran con su nombre o alias (Registrarse crea la cuenta).<br>Profes: mati@bfocusx.com o leo@bfocusx.com / coach123</p></div>`;
+V.register=()=>`<div class="bgimg" style="min-height:100%;padding:60px 24px;text-align:center">${logo(46)}<div style="margin:22px 0 28px;font-weight:700;letter-spacing:.04em">TU BOX DE CROSSFIT</div><h2 style="margin-bottom:6px">Registrate</h2><p class="mut" style="font-size:14px;margin-bottom:18px">Solo con tu nombre o alias.</p><div class="field"><span>👤</span><input id="rn" placeholder="Nombre o alias" autocomplete="nickname" maxlength="40"></div><div class="err" id="er"></div><button class="btn p" data-a="register">Entrar</button><button class="btn o" style="margin-top:10px" data-a="go" data-s="login">Volver</button></div>`;
+V.forgot=()=>`<div class="bgimg" style="min-height:100%;padding:60px 24px;text-align:center">${logo(40)}<h2 style="margin:26px 0 8px">Recuperar contraseña</h2><p class="mut" style="margin-bottom:18px;font-size:14px">Te enviaremos un enlace a tu email.</p>
+<div class="field"><input id="fe" type="email" placeholder="Email"></div><button class="btn p" data-a="forgot">Enviar enlace</button><button class="btn o" style="margin-top:10px" data-a="go" data-s="login">Volver</button></div>`;
+
+function nextBooking(uid){
+  const now=Date.now();return bookings().filter(b=>b.u===uid&&b.st==='confirmed'&&startOf(b.d,b.h).getTime()>now-3600000).sort((a,b)=>startOf(a.d,a.h)-startOf(b.d,b.h))[0]}
+V.home=()=>{const u=me();return role()==='admin'?V.coachHome():V.studentHome(u)};
+V.studentHome=u=>{const nb=nextBooking(u.id);
+  return `<div style="position:relative"><div class="hero"><div class="top" style="background:none;position:absolute;left:0;right:0;top:0"><button class="ib" data-a="go" data-s="profile">☰</button><div style="flex:1;text-align:center">${logo(20)}</div><button class="ib" data-a="go" data-s="notifs">🔔${unread()?`<span class="dot">${unread()}</span>`:''}</button></div>
+  <div class="hi"><h1>Hola, ${esc(u.name.split(' ')[0])} 👋</h1><div style="font-weight:500">Dale, a entrenar!</div></div></div>
+  <div class="next"><div class="row" style="gap:12px"><span style="font-size:30px;color:var(--or)">📅</span><div><div style="font-size:14px">Tu próxima clase</div>${nb?`<div style="font-weight:700;font-size:17px">${DS[pd(nb.d).getDay()]}, ${dm(nb.d)} - ${HH(nb.h)} hs</div><div class="or" style="font-size:14px;font-weight:500">Quedan ${free(nb.k)} cupos</div>`:`<div class="mut">Sin reservas activas</div>`}</div></div>
+  <button class="btn p" style="margin-top:10px" data-a="go" data-s="classes">📅 Reservar clase</button></div></div>
+  <div class="sec"><div class="grid2"><div class="tile" data-a="wodNext"><span class="ic">🏋️</span>WOD<br>de la clase</div><div class="tile" data-a="go" data-s="classes"><span class="ic">🗓️</span>Mi calendario</div>
+  <div class="tile" data-a="go" data-s="history"><span class="ic">📊</span>Mi progreso</div><div class="tile" data-a="go" data-s="profile"><span class="ic">👤</span>Mi perfil</div></div></div><div style="height:16px"></div>`};
+V.classes=()=>{
+  const wk=weekDates(st.week),d=wk[st.day],staff=role()!=='alumno',uid=S.get('session');
+  return hdr(staff?'Clases':'Reservar Clase')+`<div class="row" style="justify-content:space-between;padding:0 18px 8px;font-size:13px"><button class="chip" data-a="wk" data-v="-1">‹ Semana</button><span class="mut">${dm(wk[0])} – ${dm(wk[4])}</span><button class="chip" data-a="wk" data-v="1">Semana ›</button></div>
+  <div class="days">${wk.map((x,i)=>`<button class="${i===st.day?'on':''}" data-a="day" data-v="${i}">${DS[pd(x).getDay()]}<b>${dm(x)}</b></button>`).join('')}</div>`+
+  HOURS.map(h=>{const k=K(d,h),f=free(k),mine=myBook(uid,k),on=isOn(d,h),past=!canAct(d,h);
+    let badge=`<span>${f} cupos</span>`,pill='';
+    if(!on)badge='<span class="pill">Inactivo</span>';else if(mine)pill='<span class="pill ok">Tu reserva ✓</span>';else if(f===0)pill='<span class="pill">Completo</span>';else if(f<=2)pill='<span class="pill or">Últimos lugares</span>';
+    if(on&&(mine||f===0))badge='';
+    return `<div class="slot ${on?'':'off'}" data-a="${staff?'roster':'book'}" data-d="${d}" data-h="${h}"><div><div class="t">${HH(h)} hs</div><div class="p">${teacher(d,h)}</div></div><div class="m">${badge}${pill}<span>›</span></div></div>`}).join('')+'<div style="height:16px"></div>'};
+V.history=()=>{const u=me(),bs=bookings().filter(b=>b.u===u.id).sort((a,b)=>startOf(b.d,b.h)-startOf(a.d,a.h)),prs=S.get('prs',[]).filter(p=>p.u===u.id);
+  const cnt=[0,0,0,0,0];bs.filter(b=>b.st==='confirmed').forEach(b=>{const w=pd(b.d).getDay();if(w>=1&&w<=5)cnt[w-1]++});const mx=Math.max(1,...cnt);
+  return hdr('Historial')+`<div class="pad"><div class="grid2"><div class="card"><div class="mut" style="font-size:13px">Clases reservadas</div><div class="num">${bs.filter(b=>b.st==='confirmed').length}</div></div><div class="card"><div class="mut" style="font-size:13px">Asistencias</div><div class="num">${bs.filter(b=>b.att).length}</div></div></div>
+  <div class="card"><h3 style="margin-bottom:12px">Estadísticas semanales</h3><div class="bars" style="margin-bottom:22px">${cnt.map((c,i)=>`<div style="height:${c/mx*100}%"><span>${'LMMJV'[i]}</span></div>`).join('')}</div></div>
+  <div class="card"><h3 style="margin-bottom:8px">🏆 Marcas personales (PR)</h3>${prs.map(p=>`<div class="row" style="justify-content:space-between;padding:6px 0;border-bottom:1px solid #2a2a2a"><span>${esc(p.ex)}</span><b class="or">${esc(p.val)}</b></div>`).join('')||'<p class="mut" style="font-size:14px">Todavía no cargaste marcas.</p>'}<button class="btn o s" style="margin-top:10px" data-a="addPR">+ Agregar PR</button></div>
+  <h3 style="margin:10px 0">Reservas e historial de WODs</h3>${bs.map(b=>`<div class="card row" style="gap:10px;cursor:pointer" data-a="${b.st==='confirmed'?'wod':''}" data-d="${b.d}" data-h="${b.h}"><div><b>${DS[pd(b.d).getDay()]} ${dm(b.d)} · ${HH(b.h)}</b><div class="mut" style="font-size:13px">${esc(wodOf(b.k).title)}</div></div><span class="pill ${b.st==='confirmed'?'ok':'bad'}" style="margin-left:auto">${b.st==='confirmed'?(b.att?'Asistió':'Reservada'):'Cancelada'}</span></div>`).join('')||'<p class="mut">Sin reservas aún.</p>'}</div>`};
+V.profile=()=>{const u=me(),nb=nextBooking(u.id),pf=S.get('pref',{h2:true,m30:true});
+  return hdr('Mi Perfil')+`<div class="pad" style="text-align:center"><div class="av" style="${u.photo?`background-image:url(${u.photo})`:''}">${u.photo?'':esc(u.name[0])}</div><h2 style="font-size:24px;font-weight:900">${esc(u.name)}</h2><div style="margin-bottom:16px">${esc(u.email)}</div>
+  <div class="list" style="text-align:left"><div class="it">📅<div>Próxima clase<br><b style="font-weight:400;font-size:14px">${nb?DS[pd(nb.d).getDay()]+', '+dm(nb.d)+' - '+HH(nb.h)+' hs':'—'}</b></div></div>
+  <div class="it" data-a="go" data-s="history">🗓️<div>Historial de clases<br><b style="font-weight:400;font-size:14px">${bookings().filter(b=>b.u===u.id&&b.att).length} asistencias</b></div><span class="go">›</span></div>
+  <div class="it">⚙️<div>Rol · Membresía<br><b style="font-weight:400;font-size:14px;text-transform:capitalize">${u.role} · <span class="${u.active?'or':''}">${u.active?'Activa':'Inactiva'}</span></b></div></div>
+  <div class="it" data-a="editProfile">✏️ Editar perfil<span class="go">›</span></div>
+  <div class="it">⏰ Recordatorio 2 h antes<input class="sw" type="checkbox" data-a="pref" data-k="h2" ${pf.h2?'checked':''} style="margin-left:auto"></div>
+  <div class="it">⏰ Recordatorio 30 min antes<input class="sw" type="checkbox" data-a="pref" data-k="m30" ${pf.m30?'checked':''} style="margin-left:auto"></div></div>
+  <button class="btn p" style="margin-top:8px" data-a="logout">↪ Cerrar sesión</button></div>`};
+V.notifs=()=>{const l=S.get('notifs',[]).filter(n=>n.u===S.get('session'));const all=S.get('notifs',[]);all.forEach(n=>{if(n.u===S.get('session'))n.read=true});S.set('notifs',all);
+  return hdr('Notificaciones',1)+`<div class="pad">${l.map(n=>{const w=n.offer&&S.get('wait',[]).find(x=>x.u===n.u&&x.k===n.offer&&x.st==='offered'&&x.until>Date.now());return `<div class="card"><div>${esc(n.text)}</div><div class="mut" style="font-size:12px;margin-top:4px">${new Date(n.ts).toLocaleString('es-AR')}</div>${w?`<button class="btn p s" style="margin-top:8px" data-a="accept" data-k="${n.offer}">Aceptar lugar</button>`:''}</div>`}).join('')||'<p class="mut">No tenés notificaciones.</p>'}</div>`};
+
+/* ----- WOD ----- */
+V.wod=()=>{const {d,h}=st.p,k=K(d,h),w=wodOf(k),staff=role()!=='alumno',sec=staff?S.get('secrets',{})[k]:null;
+  if(!staff&&!myBook(S.get('session'),k))return hdr('WOD de la Clase',1)+'<div class="pad"><p class="mut">Necesitás una reserva confirmada para ver el entrenamiento.</p></div>';
+  return hdr('WOD de la Clase',1)+`<div class="wodhero"></div><div class="pad" style="margin-top:-60px"><h1 style="font-size:26px;font-weight:900">${esc(w.title)}</h1><div style="margin-bottom:6px">${DF[pd(d).getDay()]} ${dm(d)} - ${HH(h)} hs · <span class="or">${esc(w.type)}</span></div><div style="height:12px"></div>
+  ${Object.keys(BLOCKS).filter(b=>w.blocks[b]).map(b=>`<div class="bl"><h3>${BLOCKS[b]}</h3><pre>${esc(w.blocks[b])}</pre></div>`).join('')}
+  ${w.rx?`<div class="card"><b class="or">RX</b> ${esc(w.rx)}<br><b class="or">Scaled</b> ${esc(w.scaled)}</div>`:''}${w.notes?`<div class="card"><b>Coach:</b> ${esc(w.notes)}</div>`:''}
+  ${w.hasSecret?`<div class="surprise">🎁 Hay una sorpresa preparada para esta clase</div>`:''}
+  ${sec?`<div class="secret"><b class="or">🎁 EJERCICIO SORPRESA (solo staff)</b><p style="margin-top:6px"><b>${esc(sec.name)}</b></p><p style="font-size:14px">${esc(sec.detail)}</p><p style="font-size:13px;margin-top:6px" class="mut">Notas privadas: ${esc(sec.priv)}</p><p style="font-size:13px" class="mut">Seguridad/escalado: ${esc(sec.safety)}</p></div>`:''}
+  <button class="btn o" style="margin:6px 0 10px" data-a="video" data-d="${d}" data-h="${h}">▶ Ver Videos</button>${staff?`<button class="btn p" data-a="plan" data-d="${d}" data-h="${h}">Editar entrenamiento</button>`:''}</div>`};
+
+/* ----- COACH ----- */
+V.coachHome=()=>{const t=iso(new Date()),w=weekDates(0);const day=w.includes(t)?t:w[0];const mine=HOURS.filter(h=>isOn(day,h)&&teacher(day,h)===me().name);
+  return hdr('Panel Coach')+`<div class="pad"><div class="grid2"><div class="tile big" data-a="go" data-s="classes"><span class="ic">📅</span>Clases de hoy<br>(${mine.length})</div><div class="tile big" data-a="go" data-s="classes"><span class="ic">👥</span>Alumnos inscriptos</div>
+  <div class="tile big" data-a="go" data-s="planner"><span class="ic">✏️</span>Planificar WOD</div><div class="tile big" data-a="go" data-s="planner"><span class="ic">🔒</span>Ejercicio Sorpresa</div></div>
+  <h3 style="margin:18px 0 8px">Acciones rápidas</h3><div class="list"><div class="it" data-a="wod" data-d="${day}" data-h="${mine[0]||18}">» Ver WOD del día</div><div class="it" data-a="go" data-s="classes">📋 Marcar asistencia</div><div class="it" data-a="go" data-s="planner">✏️ Editar entrenamiento</div><div class="it" data-a="go" data-s="admin">⚙️ Panel de administración<span class="go">›</span></div></div>
+  <h3 style="margin:14px 0 8px">Mis clases (${DF[pd(day).getDay()]} ${dm(day)})</h3>${mine.map(h=>`<div class="slot" style="margin:0 0 8px" data-a="roster" data-d="${day}" data-h="${h}"><div class="t">${HH(h)} hs</div><div class="m"><span>${taken(K(day,h))}/${CAP} inscriptos</span>›</div></div>`).join('')||'<p class="mut">Sin clases asignadas.</p>'}</div>`};
+V.roster=()=>{const {d,h}=st.p,k=K(d,h),bs=bookings().filter(b=>b.k===k&&b.st==='confirmed'),wl=S.get('wait',[]).filter(x=>x.k===k&&['waiting','offered'].includes(x.st));
+  return hdr(`${HH(h)} · ${DS[pd(d).getDay()]} ${dm(d)}`,1)+`<div class="pad"><div class="card"><b>${teacher(d,h)}</b><div class="mut" style="font-size:14px">${taken(k)}/${CAP} inscriptos · ${free(k)} libres</div></div>
+  <div class="row" style="gap:8px;margin-bottom:12px"><button class="btn p s" data-a="wod" data-d="${d}" data-h="${h}">Ver WOD</button><button class="btn o s" data-a="plan" data-d="${d}" data-h="${h}">Planificar</button></div>
+  <h3 style="margin-bottom:8px">Asistencia</h3>${bs.map(b=>{const u=uById(b.u);return `<div class="card row" style="gap:10px"><div style="flex:1"><b>${esc(u?.name)}</b><div class="mut" style="font-size:12px">${esc(b.obs||'')}</div></div><button class="btn s ${b.att?'p':'o'}" data-a="att" data-id="${b.id}">${b.att?'Presente ✓':'Marcar'}</button><button class="btn o s" data-a="obs" data-id="${b.id}">📝</button></div>`}).join('')}
+  ${dummy(k)?`<p class="mut" style="font-size:13px">+ ${dummy(k)} alumnos más inscriptos (datos de ejemplo)</p>`:''}${wl.length?`<h3 style="margin:14px 0 8px">Lista de espera</h3>${wl.map(x=>`<div class="card">${esc(uById(x.u)?.name)} · ${x.st==='offered'?'oferta enviada':'esperando'}</div>`).join('')}`:''}</div>`};
+V.planner=()=>{
+  const p=st.p,dts=[...weekDates(0),...weekDates(1)],d=p.d||dts[0],h=p.h||18,k=K(d,h),w=S.get('wods',{})[k]||wodOf(k),sec=S.get('secrets',{})[k]||{},tp=S.get('templates',[]);
+  return hdr('Planificador de WOD')+`<div class="pad"><div class="grid2"><div class="field"><select id="pd" data-a="pl">${dts.map(x=>`<option value="${x}" ${x===d?'selected':''}>${DS[pd(x).getDay()]} ${dm(x)}</option>`).join('')}</select></div><div class="field"><select id="ph" data-a="pl">${HOURS.map(x=>`<option value="${x}" ${x===h?'selected':''}>${HH(x)}</option>`).join('')}</select></div></div>
+  <div class="field"><select id="tpl" data-a="loadtpl"><option value="">📁 Cargar plantilla…</option>${tp.map((t,i)=>`<option value="${i}">${esc(t.name)}</option>`).join('')}</select></div>
+  <label class="l">Nombre del entrenamiento</label><div class="field"><input id="pt" value="${esc(w.title)}"></div>
+  <label class="l">Modalidad</label><div class="field"><select id="py">${WODTYPES.map(x=>`<option ${x===w.type?'selected':''}>${x}</option>`).join('')}</select></div>
+  ${Object.keys(BLOCKS).map(b=>`<label class="l">${BLOCKS[b]}</label><div class="field ta"><textarea id="b_${b}" placeholder="Ejercicios, reps, series, peso, tiempo, distancia, rondas, descanso…">${esc(w.blocks?.[b]||'')}</textarea></div>`).join('')}
+  <div class="field"><select id="libpick" data-a="libpick"><option value="">＋ Insertar ejercicio de la biblioteca…</option>${allLib().map(([c,e])=>`<option value="${esc(e)}">${esc(c)} · ${esc(e)}</option>`).join('')}</select></div>
+  <label class="l">Versión RX</label><div class="field"><input id="prx" value="${esc(w.rx||'')}"></div><label class="l">Versión Scaled</label><div class="field"><input id="psc" value="${esc(w.scaled||'')}"></div>
+  <label class="l">Indicaciones del coach</label><div class="field ta"><textarea id="pn">${esc(w.notes||'')}</textarea></div>
+  <label class="l">Video / imagen demostrativa (URL)</label><div class="field"><input id="pv" value="${esc(w.video||'')}"></div>
+  <div class="secret"><label class="row" style="gap:10px;font-weight:700"><input class="sw" type="checkbox" id="ps" ${w.hasSecret?'checked':''}> 🎁 EJERCICIO SORPRESA (oculto para alumnos)</label>
+  <div class="field" style="margin-top:10px"><input id="sn" placeholder="Nombre del ejercicio" value="${esc(sec.name||'')}"></div><div class="field ta"><textarea id="sd" placeholder="Descripción, reps, peso…">${esc(sec.detail||'')}</textarea></div>
+  <div class="field ta"><textarea id="sp" placeholder="Notas privadas: cómo enseñarlo">${esc(sec.priv||'')}</textarea></div><div class="field ta"><textarea id="ss" placeholder="Seguridad, técnica y escalado">${esc(sec.safety||'')}</textarea></div></div>
+  <label class="row" style="gap:10px;margin-bottom:12px;font-size:14px"><input type="checkbox" id="pall"> Aplicar a todos los horarios de ese día</label>
+  <button class="btn p" data-a="savewod">Guardar WOD</button><div class="row" style="gap:8px;margin-top:8px"><button class="btn o s" style="flex:1" data-a="savetpl">Guardar como plantilla</button><button class="btn o s" style="flex:1" data-a="dupwod">Duplicar a otra fecha</button></div></div>`};
+const allLib=()=>{const r=[];Object.entries(LIB).forEach(([c,a])=>a.forEach(e=>r.push([c,e])));S.get('custom',[]).forEach(x=>r.push([x.cat||'Personalizado',x.name]));return r};
+
+/* ----- ADMIN ----- */
+function metrics(){const wk=[...weekDates(0)];let tk=0,cls=0,full=0,fr=0;const perDay=[],hrs={};
+  wk.forEach(d=>{let s=0;HOURS.forEach(h=>{if(!isOn(d,h))return;const k=K(d,h),t=taken(k);cls++;tk+=t;s+=t;fr+=CAP-t;if(t>=CAP)full++;hrs[h]=(hrs[h]||0)+t});perDay.push(s)});
+  const top3=Object.entries(hrs).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>HH(+x[0]));
+  return {tk,cls,full,fr,occ:cls?Math.round(tk/(cls*CAP)*100):0,perDay,top3,act:users().filter(u=>u.role==='alumno'&&u.active).length,att:bookings().filter(b=>b.att).length,abs:bookings().filter(b=>b.st==='confirmed'&&!b.att&&startOf(b.d,b.h)<Date.now()).length}}
+V.adminHome=()=>{const m=metrics();const mx=Math.max(1,...m.perDay);
+  return hdr('Panel Admin')+`<div class="pad"><div class="grid2"><div class="card"><div style="font-size:13px">Alumnos activos</div><div class="num">${m.act}</div></div><div class="card"><div style="font-size:13px">Reservas semana</div><div class="num">${m.tk}</div></div><div class="card"><div style="font-size:13px">Ocupación</div><div class="num">${m.occ}%</div></div><div class="card"><div style="font-size:13px">Clases completas</div><div class="num">${m.full}</div></div></div>
+  <h3 style="margin:6px 0 10px">Resumen semanal</h3><div class="bars" style="margin-bottom:26px">${m.perDay.map((c,i)=>`<div style="height:${c/mx*100}%"><span>${'LMMJV'[i]}</span></div>`).join('')}</div>
+  <div class="list"><div class="it" data-a="go" data-s="adminUsers">👥 Gestionar Usuarios<span class="go">›</span></div><div class="it" data-a="go" data-s="library">✏️ Biblioteca de Ejercicios<span class="go">›</span></div><div class="it" data-a="go" data-s="planner">📅 Planificación de WOD<span class="go">›</span></div><div class="it" data-a="go" data-s="schedule">⚙️ Configuración de horarios<span class="go">›</span></div><div class="it" data-a="go" data-s="stats">📈 Estadísticas<span class="go">›</span></div></div></div>`};
+V.admin=V.adminHome;
+V.stats=()=>{const m=metrics();return hdr('Estadísticas',1)+`<div class="pad"><div class="card">Lugares libres (semana): <b class="or">${m.fr}</b></div><div class="card">Horarios más solicitados: <b class="or">${m.top3.join(' · ')}</b></div><div class="card">Asistencias registradas: <b class="or">${m.att}</b> · Ausencias: <b class="or">${m.abs}</b></div><div class="card">Reservas reales: <b class="or">${bookings().filter(b=>b.st==='confirmed').length}</b> · Cancelaciones: <b class="or">${bookings().filter(b=>b.st==='cancelled').length}</b></div></div>`};
+V.adminUsers=()=>{const us=users(),ad=us.filter(u=>u.role==='admin'),cl=us.filter(u=>u.role==='alumno');
+  return hdr('Usuarios',1)+`<div class="pad"><h3 style="margin-bottom:4px">Administradores (profes)</h3><p class="mut" style="font-size:12px;margin-bottom:8px">Cuentas fijas: arman las clases y los WOD diarios.</p>${ad.map(u=>`<div class="card row" style="gap:10px"><span class="or" style="font-size:22px">🛡️</span><div style="flex:1"><b>${esc(u.name)}</b><div class="mut" style="font-size:12px">${esc(u.email)}</div></div><span class="pill or">Admin fijo</span></div>`).join('')}
+  <div class="row" style="justify-content:space-between;margin:16px 0 8px"><h3>Alumnos y clientes (${cl.length})</h3><button class="btn p s" data-a="newClient">+ Nuevo</button></div>
+  ${cl.map(u=>`<div class="card"><div class="row"><div style="flex:1"><b>${esc(u.name)}</b><div class="mut" style="font-size:12px">${esc(u.email)} ${esc(u.phone||'')}</div></div><span class="pill ${u.active?'ok':'bad'}">${u.active?'Membresía activa':'Suspendida'}</span></div><div class="row" style="gap:8px;margin-top:10px"><button class="btn o s" data-a="toggleU" data-id="${u.id}">${u.active?'Suspender':'Activar'}</button><button class="btn d s" data-a="delU" data-id="${u.id}">Eliminar</button></div></div>`).join('')||'<p class="mut">Todavía no hay clientes.</p>'}</div>`};
+V.library=()=>{const cats=['Todas',...Object.keys(LIB),'Personalizado'],f=st.p.cat||'Todas',q=(st.p.q||'').toLowerCase();
+  const l=allLib().filter(([c,e])=>(f==='Todas'||c===f)&&e.toLowerCase().includes(q));
+  return hdr('Biblioteca',1)+`<div style="padding:0 14px"><div class="field"><span>🔎</span><input id="lq" placeholder="Buscar ejercicio" value="${esc(st.p.q||'')}" data-a="lq"></div></div><div class="chips">${cats.map(c=>`<button class="chip ${c===f?'on':''}" data-a="cat" data-v="${esc(c)}">${esc(c)}</button>`).join('')}</div>
+  <div class="sec">${l.map(([c,e])=>`<div class="card row"><b style="flex:1">${esc(e)}</b><span class="mut" style="font-size:12px">${esc(c)}</span></div>`).join('')}<button class="btn p" data-a="addEx">+ Ejercicio personalizado</button><div style="height:16px"></div></div>`};
+V.schedule=()=>{const wk=weekDates(st.week),d=wk[st.day];
+  return hdr('Horarios',1)+`<div class="row" style="justify-content:space-between;padding:0 18px 8px"><button class="chip" data-a="wk" data-v="-1">‹</button><span class="mut">${dm(wk[0])} – ${dm(wk[4])}</span><button class="chip" data-a="wk" data-v="1">›</button></div><div class="days">${wk.map((x,i)=>`<button class="${i===st.day?'on':''}" data-a="day" data-v="${i}">${DS[pd(x).getDay()]}<b>${dm(x)}</b></button>`).join('')}</div>
+  ${HOURS.map(h=>`<div class="slot" style="cursor:default"><div class="t">${HH(h)}</div><div class="m"><div class="field" style="margin:0;padding:0 8px"><select data-a="teach" data-d="${d}" data-h="${h}" style="padding:8px 0;font-size:13px">${users().filter(u=>u.role!=='alumno').map(u=>`<option ${u.name===teacher(d,h)?'selected':''}>${esc(u.name)}</option>`).join('')}</select></div><input class="sw" type="checkbox" data-a="onoff" data-d="${d}" data-h="${h}" ${isOn(d,h)?'checked':''}></div></div>`).join('')}
+  <div style="padding:6px 14px 16px"><button class="btn o" data-a="dupweek">Duplicar esta semana a la siguiente</button></div>`};
+
+/* ================= ACCIONES ================= */
+const A={
+ go:e=>go(e.s),back:()=>history_back(),
+ login(){const q=$('#em').value.trim().toLowerCase(),pw=$('#pw').value,er=$('#er');if(!q)return er.textContent='Ingresá tu nombre o alias.';const u=users().find(x=>x.email&&x.email.toLowerCase()===q)||users().find(x=>x.name.toLowerCase()===q);if(!u)return er.textContent='No encontramos ese nombre. Tocá Registrarse.';if(u.role==='admin'&&u.pass!==pw)return er.textContent='Los profes necesitan contraseña.';if(u.role==='alumno'&&u.pass&&u.pass!==pw)return er.textContent='Contraseña incorrecta.';if(!u.active)return er.textContent='Cuenta suspendida.';S.set('session',u.id);st.week=0;st.day=0;go('home')},
+ register(){const n=$('#rn').value.trim(),er=$('#er');if(n.length<2)return er.textContent='Escribí tu nombre o alias (mín. 2 letras).';if(users().some(u=>u.name.toLowerCase()===n.toLowerCase()||(u.email&&u.email.toLowerCase()===n.toLowerCase())))return er.textContent='Ese nombre o alias ya existe. Probá con otro o ingresá desde Iniciar sesión.';const us=users(),u={id:Date.now(),name:n,email:'',phone:'',pass:'',role:'alumno',active:true,photo:''};us.push(u);S.set('users',us);S.set('session',u.id);st.week=0;st.day=0;go('home')},
+ forgot(){toast('Si el email existe, enviamos el enlace de recuperación.');setTimeout(()=>go('login'),1200)},
+ logout(){localStorage.removeItem('bfx_session');go('login')},
+ wk(e){st.week=Math.max(-1,Math.min(8,st.week+ +e.v));render()},day(e){st.day=+e.v;render()},
+ book(e){const d=e.d,h=+e.h,k=K(d,h),f=free(k),mine=myBook(S.get('session'),k),w=wodOf(k);if(!isOn(d,h))return;
+   const lab=`${DF[pd(d).getDay()]} ${dm(d)} · ${HH(h)} hs · ${teacher(d,h)}`;
+   if(mine)return modal(`<h2>Tu reserva confirmada</h2><p style="margin:10px 0">${lab}</p><div class="surprise" style="${w.hasSecret?'':'display:none'}">🎁 Hay una sorpresa preparada para esta clase</div><button class="btn p" data-a="wod" data-d="${d}" data-h="${h}">Ver WOD</button><button class="btn d" style="margin-top:8px" data-a="cancel" data-d="${d}" data-h="${h}">Cancelar reserva</button>`);
+   const onwl=S.get('wait',[]).find(x=>x.u===S.get('session')&&x.k===k&&['waiting','offered'].includes(x.st));
+   if(f<=0)return modal(`<h2>Clase completa</h2><p style="margin:10px 0">${lab}</p>${onwl?'<p class="or">Ya estás en la lista de espera.</p>':'<button class="btn p" data-a="joinwl" data-d="'+d+'" data-h="'+h+'">Anotarme en lista de espera</button>'}`);
+   modal(`<h2>Confirmar reserva</h2><p style="margin:10px 0">${lab}</p><p class="or" style="margin-bottom:14px">${f<=2?'¡Últimos lugares! ':''}Quedan ${f} cupos</p><button class="btn p" data-a="confirmBook" data-d="${d}" data-h="${h}">Confirmar reserva</button>`)},
+ confirmBook(e){const r=book(S.get('session'),e.d,+e.h);closeModal();r?toast(r,1):toast('Reserva confirmada ✓');render()},
+ cancel(e){const r=cancel(S.get('session'),e.d,+e.h);closeModal();r?toast(r,1):toast('Reserva cancelada');render()},
+ joinwl(e){const w=S.get('wait',[]);w.push({u:S.get('session'),k:K(e.d,+e.h),st:'waiting',ts:Date.now()});S.set('wait',w);closeModal();toast('Anotado en lista de espera');render()},
+ accept(e){const w=S.get('wait',[]),x=w.find(y=>y.u===S.get('session')&&y.k===e.k&&y.st==='offered');if(!x||x.until<Date.now())return toast('La oferta expiró',1);x.st='done';S.set('wait',w);const [d,h]=e.k.split('|');const r=book(S.get('session'),d,+h);toast(r||'Lugar confirmado ✓',!!r);render()},
+ wod(e){go('wod',{d:e.d,h:+e.h})},
+ wodNext(){const nb=nextBooking(S.get('session'));nb?go('wod',{d:nb.d,h:nb.h}):toast('Reservá una clase para ver su WOD',1)},
+ roster(e){go('roster',{d:e.d,h:+e.h})},
+ att(e){const b=bookings(),x=b.find(y=>y.id==e.id);x.att=!x.att;S.set('bookings',b);render()},
+ obs(e){modal(`<h2>Observación</h2><div class="field ta" style="margin-top:10px"><textarea id="ot"></textarea></div><button class="btn p" data-a="saveobs" data-id="${e.id}">Guardar</button>`)},
+ saveobs(e){const b=bookings(),x=b.find(y=>y.id==e.id);x.obs=$('#ot').value;S.set('bookings',b);closeModal();render()},
+ plan(e){go('planner',{d:e.d,h:+e.h})},
+ pl(){go('planner',{d:$('#pd').value,h:+$('#ph').value})},
+ libpick(){const v=$('#libpick').value;if(!v)return;navigator.clipboard?.writeText(v);toast(`"${v}" copiado: pegalo en el bloque`)},
+ savewod(){const d=$('#pd').value,h=+$('#ph').value;const blocks={};Object.keys(BLOCKS).forEach(b=>{const v=$('#b_'+b).value.trim();if(v)blocks[b]=v});
+   const hasS=$('#ps').checked&&$('#sn').value.trim();const w={title:$('#pt').value||'Entrenamiento',type:$('#py').value,blocks,rx:$('#prx').value,scaled:$('#psc').value,notes:$('#pn').value,video:$('#pv').value,hasSecret:!!hasS};
+   const targets=$('#pall').checked?HOURS:[h],ws=S.get('wods',{}),sc=S.get('secrets',{});
+   targets.forEach(x=>{const k=K(d,x);ws[k]=w;if(hasS)sc[k]={name:$('#sn').value,detail:$('#sd').value,priv:$('#sp').value,safety:$('#ss').value};else delete sc[k]});
+   S.set('wods',ws);S.set('secrets',sc);toast('WOD guardado ✓')},
+ savetpl(){const n=prompt('Nombre de la plantilla');if(!n)return;const blocks={};Object.keys(BLOCKS).forEach(b=>blocks[b]=$('#b_'+b).value);const t=S.get('templates',[]);t.push({name:n,title:$('#pt').value,type:$('#py').value,blocks});S.set('templates',t);toast('Plantilla guardada');render()},
+ loadtpl(){const t=S.get('templates',[])[+$('#tpl').value];if(!t)return;$('#pt').value=t.title;$('#py').value=t.type;Object.keys(BLOCKS).forEach(b=>$('#b_'+b).value=t.blocks[b]||'')},
+ dupwod(){const to=prompt('Duplicar a fecha (AAAA-MM-DD)');if(!to)return;const h=+$('#ph').value;A.savewod();const ws=S.get('wods',{}),sc=S.get('secrets',{}),from=K($('#pd').value,h);if(ws[from]){ws[K(to,h)]=ws[from];if(sc[from])sc[K(to,h)]=sc[from];S.set('wods',ws);S.set('secrets',sc);toast('Duplicado ✓')}},
+ toggleU(e){const u=users(),x=u.find(y=>y.id==e.id);if(!x||x.role!=='alumno')return;x.active=!x.active;S.set('users',u);render()},
+ cat(e){st.p.cat=e.v;render()},lq(){st.p.q=$('#lq').value;const p=st.p;render();const i=$('#lq');i.focus();i.setSelectionRange(99,99)},
+ addEx(){modal(`<h2>Nuevo ejercicio</h2><div class="field" style="margin-top:10px"><input id="xn" placeholder="Nombre"></div><div class="field"><select id="xc">${Object.keys(LIB).map(c=>`<option>${c}</option>`).join('')}</select></div><div class="field"><select id="xl"><option>Principiante</option><option>Intermedio</option><option>Avanzado</option></select></div><button class="btn p" data-a="saveEx">Guardar</button>`)},
+ saveEx(){const n=$('#xn').value.trim();if(!n)return;const c=S.get('custom',[]);c.push({name:n,cat:$('#xc').value,lvl:$('#xl').value});S.set('custom',c);closeModal();render()},
+ teach(e){const c=S.get('cfg',{}),k=K(e.d,+e.h);c[k]={...c[k],teacher:$(`[data-a=teach][data-d="${e.d}"][data-h="${e.h}"]`).value};S.set('cfg',c)},
+ onoff(e){const c=S.get('cfg',{}),k=K(e.d,+e.h);c[k]={...c[k],off:!c[k]?.off};S.set('cfg',c);render()},
+ dupweek(){const a=weekDates(st.week),b=weekDates(st.week+1),c=S.get('cfg',{}),w=S.get('wods',{}),s=S.get('secrets',{});a.forEach((d,i)=>HOURS.forEach(h=>{const f=K(d,h),t=K(b[i],h);if(c[f])c[t]=c[f];if(w[f])w[t]=w[f];if(s[f])s[t]=s[f]}));S.set('cfg',c);S.set('wods',w);S.set('secrets',s);toast('Semana duplicada ✓')},
+ addPR(){modal(`<h2>Nueva marca (PR)</h2><div class="field" style="margin-top:10px"><input id="pe" placeholder="Ejercicio (ej. Back squat)"></div><div class="field"><input id="pv2" placeholder="Marca (ej. 100 kg)"></div><button class="btn p" data-a="savePR">Guardar</button>`)},
+ savePR(){const e=$('#pe').value.trim(),v=$('#pv2').value.trim();if(!e||!v)return;const p=S.get('prs',[]);p.push({u:S.get('session'),ex:e,val:v});S.set('prs',p);closeModal();render()},
+ editProfile(){const u=me();modal(`<h2>Editar perfil</h2><div class="field" style="margin-top:10px"><input id="en" value="${esc(u.name)}"></div><div class="field"><input id="et" value="${esc(u.phone||'')}" placeholder="Teléfono"></div><div class="field"><input id="epw" type="password" placeholder="Contraseña (opcional, mín. 6)"></div><div class="field"><input id="ef" type="file" accept="image/*"></div><button class="btn p" data-a="saveProfile">Guardar</button>`)},
+ saveProfile(){const us=users(),u=us.find(x=>x.id===S.get('session'));u.name=$('#en').value||u.name;u.phone=$('#et').value;const np=$('#epw').value;if(np&&np.length>=6)u.pass=np;const f=$('#ef').files[0];const fin=()=>{S.set('users',us);closeModal();render()};if(f){const r=new FileReader();r.onload=()=>{u.photo=r.result;fin()};r.readAsDataURL(f)}else fin()},
+ delU(e){const x=uById(+e.id);if(!x||x.role!=='alumno'||!confirm('¿Eliminar a '+x.name+'? Se cancelan sus reservas.'))return;S.set('users',users().filter(u=>u.id!==x.id));const b=bookings();b.forEach(r=>{if(r.u===x.id&&r.st==='confirmed'){r.st='cancelled';offerNext(r.k)}});S.set('bookings',b);render()},
+ newClient(){modal(`<h2>Nuevo cliente</h2><div class="field" style="margin-top:10px"><input id="cn" placeholder="Nombre o alias"></div><div class="field"><input id="ct" placeholder="Teléfono (opcional)"></div><button class="btn p" data-a="saveClient">Crear cliente</button>`)},
+ saveClient(){const n=$('#cn').value.trim();if(n.length<2)return toast('Escribí un nombre o alias',1);if(users().some(u=>u.name.toLowerCase()===n.toLowerCase()))return toast('Ese nombre ya existe',1);const us=users();us.push({id:Date.now(),name:n,email:'',phone:$('#ct').value,pass:'',role:'alumno',active:true});S.set('users',us);closeModal();render()},
+ eye(){const i=$('#pw');i.type=i.type==='password'?'text':'password'},
+ video(e){const w=wodOf(K(e.d,+e.h));/^https?:\/\//.test(w.video||'')?window.open(w.video,'_blank','noopener'):toast('Todavía no hay videos cargados',1)},
+ pref(e){const p=S.get('pref',{h2:true,m30:true});p[e.k]=!p[e.k];S.set('pref',p)}
+};
+const stack=[];
+function history_back(){const b=stack.pop();b?(st.scr=b.scr,st.p=b.p,render()):go('home')}
+const _go=go;go=function(s,p={}){if(!['splash'].includes(st.scr)&&st.scr!==s&&!['home','classes','history','profile','planner','admin'].includes(s))stack.push({scr:st.scr,p:st.p});else if(['home','classes','history','profile','planner','admin'].includes(s))stack.length=0;_go(s,p)};
+document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t||['SELECT','INPUT'].includes(t.tagName)&&t.type!=='checkbox')return;if(t.tagName==='INPUT'&&t.type==='checkbox'&&!['pref','onoff'].includes(t.dataset.a))return;const f=A[t.dataset.a];if(f){if(t.tagName==='INPUT')return;f(t.dataset)}});
+document.addEventListener('change',e=>{const t=e.target.closest('[data-a]');if(!t)return;const a=t.dataset.a;if(['pref','onoff','pl','role','teach','loadtpl','libpick'].includes(a))A[a](t.dataset)});
+document.addEventListener('input',e=>{if(e.target.dataset.a==='lq')A.lq()});
+window.addEventListener('storage',()=>{if(!$('#modal')&&!['planner','login','register'].includes(st.scr))render()});
+setInterval(()=>{sweep();if(['classes','home'].includes(st.scr)&&!$('#modal'))render()},30000);
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing){if(st.scr==='login')A.login();else if(st.scr==='register')A.register()}});
+seed();render();
+</script>
+</body>
+</html>
